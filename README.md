@@ -2,7 +2,7 @@
 
 This repo contains the code from "Harmful Factuality Hallucination: LLMs Correcting What They Shouldn't"
 
-![framework](assets/SCH-category.jpg)
+![framework](assets/SCH-category.jpg){width="300px"}
 
 # Project Entry Points
 - Main experiment runner: run_tasks.py
