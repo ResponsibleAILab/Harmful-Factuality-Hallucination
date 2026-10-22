@@ -102,3 +102,30 @@ python qa_generator.py \
 # Acknowledgements
 
 Responsible AI Lab, University of North Texas
+
+# Citation
+
+If you use this code, please cite our paper:
+
+```bibtex
+@inproceedings{li-etal-2026-harmful,
+    title = "Harmful Factuality: {LLM}s Correcting What They Shouldn{'}t",
+    author = "Li, Mingchen  and
+      Zhang, Hanzhi  and
+      Fan, Heng  and
+      Ding, Junhua  and
+      Feng, Yunhe",
+    editor = "Demberg, Vera  and
+      Inui, Kentaro  and
+      Marquez, Llu{\'i}s",
+    booktitle = "Findings of the {A}ssociation for {C}omputational {L}inguistics: {EACL} 2026",
+    month = mar,
+    year = "2026",
+    address = "Rabat, Morocco",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2026.findings-eacl.46/",
+    doi = "10.18653/v1/2026.findings-eacl.46",
+    pages = "896--912",
+    ISBN = "979-8-89176-386-9"
+}
+```
