@@ -105,7 +105,7 @@ Responsible AI Lab, University of North Texas
 
 # Citation
 
-If you use this code, please cite our paper:
+If you find HFH useful or interesting, please cite our paper:
 
 ```bibtex
 @inproceedings{li-etal-2026-harmful,
