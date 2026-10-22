@@ -1,0 +1,33 @@
+name: Repository maintenance
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  clean-main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Finalize repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_commit=019e86fb4f4bc46cd6b6516f051f824c124fa419
+          original_head=$(git rev-parse HEAD)
+          test "$(git rev-parse HEAD^)" = "$source_commit"
+          test "$(git diff --name-only "$source_commit" HEAD)" = ".github/workflows/repository-maintenance.yml"
+          rm RECOVERY.md assets/README.md .github/workflows/repository-maintenance.yml
+          printf '%s' 'IyBIYXJtZnVsIEZhY3R1YWxpdHkgSGFsbHVjaW5hdGlvbiAoSEZIKQoKVGhpcyByZXBvIGNvbnRhaW5zIHRoZSBjb2RlIGZyb20gIkhhcm1mdWwgRmFjdHVhbGl0eSBIYWxsdWNpbmF0aW9uOiBMTE1zIENvcnJlY3RpbmcgV2hhdCBUaGV5IFNob3VsZG4ndCIKCiFbZnJhbWV3b3JrXShhc3NldHMvU0NILWNhdGVnb3J5LnBuZykKCiMgUHJvamVjdCBFbnRyeSBQb2ludHMKCi0gTWFpbiBleHBlcmltZW50IHJ1bm5lcjogYHJ1bl90YXNrcy5weWAKLSBEZWZlbnNlIGV4cGVyaW1lbnRzOiBgZGVmZW5zZV9leHBlcmltZW50LnB5YAotIFFBIGdlbmVyYXRpb24gKEFwcGVuZGl4IEIpOiBgcWFfZ2VuZXJhdG9yLnB5YAoKIyBGb2xkZXIgU3RydWN0dXJlCgotIGBkYXRhL2AKICAtIGBzYW1wbGVkX3dpa2llbnRpdGllcy5qc29uYAogIC0gYGRvd25sb2FkX3dpa2llbnRpdGllcy5weWAKLSBgcGVydHVyYmF0aW9uL2AKICAtIGBnZXAucHlgOiBHYXVzc2lhbiBFbWJlZGRpbmcgUGVydHVyYmF0aW9uIChzb2Z0IHBlcnR1cmJhdGlvbikKICAtIGBsaWVyLnB5YDogTExNLUluc3RydWN0ZWQgRW50aXR5IFJlcGxhY2VtZW50IChoYXJkIHBlcnR1cmJhdGlvbikKICAtIGBlbnRpdHlfc2VsZWN0b3IucHlgOiBIZWFkL0JvZHkvVGFpbCBhbmQgdGhlbWUtcmVsYXRlZCBzZWxlY3Rpb24KLSBgZXZhbHVhdGlvbi9gCiAgLSBgcHJvbXB0cy5weWA6IHByb21wdCB0ZW1wbGF0ZXMgKHN1bW1hcnksIHJlcGhyYXNlLCBRQSkKLSBgbWV0cmljcy9gCiAgLSBgY2xhc3NpZmllci5weWA6IGF1dG9tYXRlZCBlbnRpdHktcHJlc2VuY2UgZXZhbHVhdGlvbgoKIyBSZXF1aXJlbWVudHMKCkluc3RhbGwgZGVwZW5kZW5jaWVzOgoKYGBgYmFzaApwaXAgaW5zdGFsbCAtciByZXF1aXJlbWVudHMudHh0CmBgYAoKIyBEYXRhIFByZXBhcmF0aW9uCgpEb3dubG9hZCBhbmQgc2FtcGxlIHRoZSBkYXRhc2V0OgoKYGBgYmFzaApweXRob24gZGF0YS9kb3dubG9hZF93aWtpZW50aXRpZXMucHkgLS1vdXRwdXQgZGF0YS9zYW1wbGVkX3dpa2llbnRpdGllcy5qc29uCmBgYAoKVGhpcyBzY3JpcHQgZ2VuZXJhdGVzIGBzdW1tYXJ5YCBhbmQgYGluX3N1bV9lbnRpdGllc2AgdXNpbmcgR2VtaW5pLgpQbGFjZSB5b3VyIEdlbWluaSBBUEkga2V5IGF0OiBgTW9kZWxzLy5rZXlgCgpJZiB5b3UgYWxyZWFkeSBoYXZlIHBlcnR1cmJlZCBkYXRhLCBwbGFjZSBpdCBhczoKCmBgYHRleHQKZGF0YS9wZXJ0dXJiZWRfZGF0YS5qc29uCmBgYAoKIyBVc2FnZQoKMSkgU29mdCBwZXJ0dXJiYXRpb24gKEdFUCkKCmBgYGJhc2gKcHl0aG9uIC1tIHBlcnR1cmJhdGlvbi5nZXAKYGBgCgooVXNlIHRoZSByZXR1cm5lZCBkYXRhZnJhbWUgaW4geW91ciBwaXBlbGluZTsgc2VlIGNvZGUgZm9yIEFQSS4pCgoyKSBIYXJkIHBlcnR1cmJhdGlvbiAoTElFUikKCmBgYGJhc2gKcHl0aG9uIC1tIHBlcnR1cmJhdGlvbi5saWVyCmBgYAoKKFJlcXVpcmVzIE9wZW5BSSBBUEkgYWNjZXNzOyBzZWUgY29kZSBmb3IgQVBJLikKCjMpIFJ1biBzdW1tYXJpemF0aW9uIG9yIHJlcGhyYXNlIHRhc2sKCmBgYGJhc2gKcHl0aG9uIHJ1bl90YXNrcy5weSBcCiAgLS1pbnB1dCA8aW5wdXRfanNvbj4gXAogIC0tb3V0cHV0IDxvdXRwdXRfanNvbj4gXAogIC0tZXZhbC1vdXRwdXQgPHJlcG9ydF90eHQ+IFwKICAtLXRhc2sgc3VtbWFyeSBcCiAgLS1tb2RlbCBncHQ0byBcCiAgLS1lbnRpdGllcy1jb2x1bW4gZW50aXRpZXMKYGBgCgo0KSBSdW4gZGVmZW5zZSBwcm9tcHQgZXhwZXJpbWVudHMKCmBgYGJhc2gKcHl0aG9uIGRlZmVuc2VfZXhwZXJpbWVudC5weSBcCiAgLS1pbnB1dCA8aW5wdXRfanNvbj4gXAogIC0tb3V0cHV0IDxvdXRwdXRfanNvbj4gXAogIC0tZXZhbC1vdXRwdXQgPHJlcG9ydF90eHQ+IFwKICAtLXRhc2sgc3VtbWFyeSBcCiAgLS1tb2RlbCBncHQ0bwpgYGAKCjUpIEdlbmVyYXRlIFFBIHBhaXJzIChBcHBlbmRpeCBCKQoKYGBgYmFzaApweXRob24gcWFfZ2VuZXJhdG9yLnB5IFwKICAtLWlucHV0IDxwZXJ0dXJiZWRfanNvbj4gXAogIC0tb3V0cHV0IDxxYV9qc29uPiBcCiAgLS1tb2RlbCBncHQtNC4xCmBgYAoKIyBBY2tub3dsZWRnZW1lbnRzCgpSZXNwb25zaWJsZSBBSSBMYWIsIFVuaXZlcnNpdHkgb2YgTm9ydGggVGV4YXMK' | base64 --decode > README.md
+          curl --fail --location --retry 2 --max-time 60 'https://github.com/user-attachments/assets/bdc2838c-5b5b-40fb-b2b0-ab8b069ed50f' --output assets/SCH-category.png
+          printf '%s  %s\n' '607059ecad77ac5a394a47c45757d423a99684433d2b5076b0d78c90ef5ee9f7' 'assets/SCH-category.png' | sha256sum --check
+          git add -A
+          test "$(git write-tree)" = "8112f7e1d0c2fb3bd75bec2731200655ebc3e268"
+          git config user.name 'FatShion'
+          git config user.email '48754270+FatShion-FTD@users.noreply.github.com'
+          clean_commit=$(git commit-tree 8112f7e1d0c2fb3bd75bec2731200655ebc3e268 -m 'Initial commit')
+          test -z "$(git show --no-patch --format=%P "$clean_commit")"
+          git push --force-with-lease="refs/heads/main:$original_head" origin "$clean_commit:refs/heads/main"
+          printf 'Main now points to %s\n' "$clean_commit"
